@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
+using WebUITestAutomation.Core;
 
-namespace WebUITestAutomation.Tests.PageObjects
+namespace WebUITestAutomation.Business.PageObjects
 {
     public class ArticlePage : BasePage
     {
@@ -11,7 +12,7 @@ namespace WebUITestAutomation.Tests.PageObjects
 
         public string GetArticleTitle()
         {
-            var titleElement = FindElement(_articleTitleBy);
+            var titleElement = driver.FindElementWithWait(_articleTitleBy);
             return titleElement.Text.Trim();
         }
     }

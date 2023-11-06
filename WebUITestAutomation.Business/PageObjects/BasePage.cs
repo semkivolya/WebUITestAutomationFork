@@ -2,7 +2,7 @@
 using OpenQA.Selenium.Support.UI;
 using System.Collections.ObjectModel;
 
-namespace WebUITestAutomation.Tests.PageObjects
+namespace WebUITestAutomation.Business.PageObjects
 {
     public class BasePage : IDisposable
     {
@@ -14,28 +14,6 @@ namespace WebUITestAutomation.Tests.PageObjects
         public BasePage(IWebDriver driver)
         {
             this.driver = driver;
-        }
-
-        protected IWebElement? FindElement(By by, int timeout = 10)
-        {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
-            IWebElement? element = wait.Until<IWebElement>(d =>
-            {
-                IWebElement tempElement = d.FindElement(by);
-                return tempElement.Displayed && tempElement.Enabled ? tempElement : null;
-            });
-            return element;
-        }
-
-        protected ReadOnlyCollection<IWebElement> FindElements(By by, int timeout = 10)
-        {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
-            var elements = wait.Until<ReadOnlyCollection<IWebElement>>(d =>
-            {
-                var tempElements = d.FindElements(by);
-                return tempElements.Any() ? tempElements : null;
-            });
-            return elements;
         }
 
         protected void Click(Func<IWebElement> getElement)

@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
+using WebUITestAutomation.Core;
 
-namespace WebUITestAutomation.Tests.PageObjects
+namespace WebUITestAutomation.Business.PageObjects
 {
     public class JobListingPage : BasePage
     {
@@ -12,7 +13,7 @@ namespace WebUITestAutomation.Tests.PageObjects
 
         public string GetJobDetails()
         {
-            return FindElement(_jobDetailsBy).Text;
+            return driver.FindElementWithWait(_jobDetailsBy).Text;
         }
     }
 }

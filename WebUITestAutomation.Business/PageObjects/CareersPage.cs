@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
+using WebUITestAutomation.Core;
 
-namespace WebUITestAutomation.Tests.PageObjects
+namespace WebUITestAutomation.Business.PageObjects
 {
     public class CareersPage : BasePage
     {
@@ -28,15 +29,15 @@ namespace WebUITestAutomation.Tests.PageObjects
 
         public void EnterKeyword(string language)
         {
-            SendKeys(() => FindElement(_keywordsFieldBy), language);
+            SendKeys(() => driver.FindElementWithWait(_keywordsFieldBy), language);
         }
 
         public void EnterLocation(string location)
         {
-            Click(() => FindElement(_locationsSelectionArrowBy));
+            Click(() => driver.FindElementWithWait(_locationsSelectionArrowBy));
             Click(() =>
             {
-                var locations = FindElements(_locationsListBy);
+                var locations = driver.FindElementsWithWait(_locationsListBy);
                 return locations.FirstOrDefault(x => x.GetAttribute("title") == location);
             });
         }
@@ -45,7 +46,7 @@ namespace WebUITestAutomation.Tests.PageObjects
         {
             try
             {
-                Click(() => FindElement(_remoteCheckBy));
+                Click(() => driver.FindElementWithWait(_remoteCheckBy));
             }
             catch (ElementClickInterceptedException)
             {
@@ -57,17 +58,17 @@ namespace WebUITestAutomation.Tests.PageObjects
 
         public void SubmitSearch()
         {
-            Click(() => FindElement(_findButtonBy));
+            Click(() => driver.FindElementWithWait(_findButtonBy));
         }
 
         public void SortSearchResultsByDate()
         {
-            Click(() => FindElement(_sortByDateBy));
+            Click(() => driver.FindElementWithWait(_sortByDateBy));
         }
 
         public JobListingPage ViewLatestPostedJobDetails()
         {
-            Click(() => FindElement(_viewAndApplyBy));
+            Click(() => driver.FindElementWithWait(_viewAndApplyBy));
             return new JobListingPage(driver);
         }
     }

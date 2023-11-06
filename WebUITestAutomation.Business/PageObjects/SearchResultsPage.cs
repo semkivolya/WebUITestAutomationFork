@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
+using WebUITestAutomation.Core;
 
-namespace WebUITestAutomation.Tests.PageObjects
+namespace WebUITestAutomation.Business.PageObjects
 {
     public class SearchResultsPage : BasePage
     {
@@ -12,7 +13,7 @@ namespace WebUITestAutomation.Tests.PageObjects
 
         public List<string> GetSearchResultsText()
         {
-            return FindElements(_searchResultItemTextBy).Select(p => p.Text).ToList();
+            return driver.FindElementsWithWait(_searchResultItemTextBy).Select(p => p.Text).ToList();
         }
     }
 }

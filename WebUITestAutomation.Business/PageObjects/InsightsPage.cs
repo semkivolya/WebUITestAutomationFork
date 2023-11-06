@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
+using WebUITestAutomation.Core;
 
-namespace WebUITestAutomation.Tests.PageObjects
+namespace WebUITestAutomation.Business.PageObjects
 {
     public class InsightsPage : BasePage
     {
@@ -13,19 +14,19 @@ namespace WebUITestAutomation.Tests.PageObjects
 
         public void SwipeCarouselRight()
         {
-            Click(() => FindElement(_articlesCarouselRightArrowBy));
+            Click(() => driver.FindElementWithWait(_articlesCarouselRightArrowBy));
             Thread.Sleep(500);
         }
 
         public ArticlePage ClickReadMore()
         {
-            Click(() => FindElement(_activeArticleLinkBy));
+            Click(() => driver.FindElementWithWait(_activeArticleLinkBy));
             return new ArticlePage(driver);
         }
 
         public string GetCarouselArticleTitle()
         {
-            var articleTitleElements = FindElements(_activeArticleTitleElementsBy);
+            var articleTitleElements = driver.FindElementsWithWait(_activeArticleTitleElementsBy);
             return string.Join(' ', articleTitleElements.Select(t => t.Text.Trim()));
         }
     }

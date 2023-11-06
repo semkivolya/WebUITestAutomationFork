@@ -1,8 +1,9 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using System.Runtime.InteropServices;
+using WebUITestAutomation.Core;
 
-namespace WebUITestAutomation.Tests.PageObjects
+namespace WebUITestAutomation.Business.PageObjects
 {
     public class AboutPage : BasePage
     {
@@ -18,13 +19,13 @@ namespace WebUITestAutomation.Tests.PageObjects
 
         public void ScrollToEpamAtGlanceSection()
         {
-            var section = FindElement(_epamAtAGlanceBy);
+            var section = driver.FindElementWithWait(_epamAtAGlanceBy);
             new Actions(driver).ScrollToElement(section).Perform();
         }
 
         public async Task<string> DownloadFileAsync()
         {
-            var downloadLink = FindElement(_downloadLinkBy);
+            var downloadLink = driver.FindElementWithWait(_downloadLinkBy);
             var address = downloadLink.GetAttribute("href");
 
             var fileName = Path.GetFileName(address);

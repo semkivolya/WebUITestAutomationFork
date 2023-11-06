@@ -1,11 +1,10 @@
 ﻿using OpenQA.Selenium;
+using WebUITestAutomation.Core;
 
-namespace WebUITestAutomation.Tests.PageObjects
+namespace WebUITestAutomation.Business.PageObjects
 {
     public class HomePage : BasePage
     {
-        private string? _webAppUrl;
-
         private readonly By _acceptCookiesBy = By.Id("onetrust-accept-btn-handler");
         private readonly By _careersLinkBy = By.LinkText("Careers");
         private readonly By _aboutLinkBy = By.LinkText("About");
@@ -15,35 +14,34 @@ namespace WebUITestAutomation.Tests.PageObjects
         private readonly By _globalSearchFieldBy = By.Id("new_form_search");
         private readonly By _globalSearchButtonBy = By.XPath("//*[@id='new_form_search']/../following-sibling::button");
 
-        public HomePage(IWebDriver driver, string url) : base(driver)
+        public HomePage(IWebDriver driver) : base(driver)
         {
-            _webAppUrl = url;
         }
 
-        public void Navigate()
+        public void Open(string url)
         {
-            driver.Navigate().GoToUrl(_webAppUrl);
+            driver.Navigate().GoToUrl(url);
         }
 
         public void AcceptCookies()
         {
-            Click(() => FindElement(_acceptCookiesBy));
+            Click(() => driver.FindElementWithWait(_acceptCookiesBy));
         }
 
         public CareersPage ClickCareersLink()
         {
-            Click(() => FindElement(_careersLinkBy));
+            Click(() => driver.FindElementWithWait(_careersLinkBy));
             return new CareersPage(driver);
         }
 
         public void ClickSearchIcon()
         {
-            Click(() => FindElement(_globalSearchIconBy));
+            Click(() => driver.FindElementWithWait(_globalSearchIconBy));
         }
 
         public void EnterSearchString(string searchString)
         {
-            SendKeys(() => FindElement(_globalSearchFieldBy), searchString);
+            SendKeys(() => driver.FindElementWithWait(_globalSearchFieldBy), searchString);
         }
 
         public SearchResultsPage ClickFindButton()
@@ -54,13 +52,13 @@ namespace WebUITestAutomation.Tests.PageObjects
 
         public AboutPage ClickAboutLink()
         {
-            Click(() => FindElement(_aboutLinkBy));
+            Click(() => driver.FindElementWithWait(_aboutLinkBy));
             return new AboutPage(driver);
         }
 
         public InsightsPage ClickInsightsLink()
         {
-            Click(() => FindElement(_insightsLinkBy));
+            Click(() => driver.FindElementWithWait(_insightsLinkBy));
             return new InsightsPage(driver);
         }
     }
