@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using System.Runtime.InteropServices;
 
-namespace WebUITestAutomation.Tests
+namespace WebUITestAutomation.Tests.PageObjects
 {
     public class AboutPage : BasePage
     {
@@ -12,7 +11,7 @@ namespace WebUITestAutomation.Tests
         private string _downloadedFilePath;
         private readonly By _epamAtAGlanceBy = By.CssSelector(".content-container>div:nth-child(5)");
         private readonly By _downloadLinkBy = By.CssSelector(".content-container>div:nth-child(5) .button a");
-        public AboutPage(IWebDriver driver, IConfiguration configuration) : base(driver, configuration)
+        public AboutPage(IWebDriver driver) : base(driver)
         {
             _fileDownloadFolder = Guid.NewGuid().ToString();
         }

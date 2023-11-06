@@ -1,7 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 
-namespace WebUITestAutomation.Tests
+namespace WebUITestAutomation.Tests.PageObjects
 {
     public class CareersPage : BasePage
     {
@@ -16,7 +15,7 @@ namespace WebUITestAutomation.Tests
         private readonly By _sortByDateBy = By.XPath("//input[@id='sort-time']//following-sibling::label");
         private readonly By _viewAndApplyBy = By.CssSelector(".search-result__item:first-of-type .search-result__item-controls a");
 
-        public CareersPage(IWebDriver driver, IConfiguration configuration) : base(driver, configuration)
+        public CareersPage(IWebDriver driver) : base(driver)
         {
         }
 
@@ -69,7 +68,7 @@ namespace WebUITestAutomation.Tests
         public JobListingPage ViewLatestPostedJobDetails()
         {
             Click(() => FindElement(_viewAndApplyBy));
-            return new JobListingPage(driver, configuration);
+            return new JobListingPage(driver);
         }
     }
 }

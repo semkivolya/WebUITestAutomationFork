@@ -1,13 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 
-namespace WebUITestAutomation.Tests
+namespace WebUITestAutomation.Tests.PageObjects
 {
     public class SearchResultsPage : BasePage
     {
         private readonly By _searchResultItemTextBy = By.CssSelector(".search-results__item p");
 
-        public SearchResultsPage(IWebDriver driver, IConfiguration configuration) : base(driver, configuration)
+        public SearchResultsPage(IWebDriver driver) : base(driver)
         {
         }
 

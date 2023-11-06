@@ -1,12 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 
-namespace WebUITestAutomation.Tests
+namespace WebUITestAutomation.Tests.PageObjects
 {
     public class ArticlePage : BasePage
     {
         private readonly By _articleTitleBy = By.CssSelector(".header_and_download span span");
-        public ArticlePage(IWebDriver driver, IConfiguration configuration) : base(driver, configuration)
+        public ArticlePage(IWebDriver driver) : base(driver)
         {
         }
 

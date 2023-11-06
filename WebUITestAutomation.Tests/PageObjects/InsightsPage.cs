@@ -1,15 +1,13 @@
-﻿using Microsoft.Extensions.Configuration;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
+﻿using OpenQA.Selenium;
 
-namespace WebUITestAutomation.Tests
+namespace WebUITestAutomation.Tests.PageObjects
 {
     public class InsightsPage : BasePage
     {
         private readonly By _articlesCarouselRightArrowBy = By.XPath("//*[contains(@class, 'slider section')][1]//*[contains(@class, 'slider__right-arrow')]");
         private readonly By _activeArticleLinkBy = By.XPath("//*[contains(@class, 'slider section')][1]//div[contains(@class,'owl-item active')]//a");
         private readonly By _activeArticleTitleElementsBy = By.XPath("//*[contains(@class, 'slider section')][1]//div[contains(@class,'owl-item active')]//p/span/span");
-        public InsightsPage(IWebDriver driver, IConfiguration configuration) : base(driver, configuration)
+        public InsightsPage(IWebDriver driver) : base(driver)
         {
         }
 
@@ -22,7 +20,7 @@ namespace WebUITestAutomation.Tests
         public ArticlePage ClickReadMore()
         {
             Click(() => FindElement(_activeArticleLinkBy));
-            return new ArticlePage(driver, configuration);
+            return new ArticlePage(driver);
         }
 
         public string GetCarouselArticleTitle()

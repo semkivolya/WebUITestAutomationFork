@@ -1,7 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 
-namespace WebUITestAutomation.Tests
+namespace WebUITestAutomation.Tests.PageObjects
 {
     public class HomePage : BasePage
     {
@@ -16,9 +15,9 @@ namespace WebUITestAutomation.Tests
         private readonly By _globalSearchFieldBy = By.Id("new_form_search");
         private readonly By _globalSearchButtonBy = By.XPath("//*[@id='new_form_search']/../following-sibling::button");
 
-        public HomePage(IWebDriver driver, IConfiguration configuration) : base(driver, configuration)
+        public HomePage(IWebDriver driver, string url) : base(driver)
         {
-            _webAppUrl = configuration["webAppUrl"];
+            _webAppUrl = url;
         }
 
         public void Navigate()
@@ -34,7 +33,7 @@ namespace WebUITestAutomation.Tests
         public CareersPage ClickCareersLink()
         {
             Click(() => FindElement(_careersLinkBy));
-            return new CareersPage(driver, configuration);
+            return new CareersPage(driver);
         }
 
         public void ClickSearchIcon()
@@ -50,19 +49,19 @@ namespace WebUITestAutomation.Tests
         public SearchResultsPage ClickFindButton()
         {
             Click(() => driver.FindElement(_globalSearchButtonBy));
-            return new SearchResultsPage(driver, configuration);
+            return new SearchResultsPage(driver);
         }
 
         public AboutPage ClickAboutLink()
         {
             Click(() => FindElement(_aboutLinkBy));
-            return new AboutPage(driver, configuration);
+            return new AboutPage(driver);
         }
 
         public InsightsPage ClickInsightsLink()
         {
             Click(() => FindElement(_insightsLinkBy));
-            return new InsightsPage(driver, configuration);
+            return new InsightsPage(driver);
         }
     }
 }

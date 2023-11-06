@@ -1,13 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 
-namespace WebUITestAutomation.Tests
+namespace WebUITestAutomation.Tests.PageObjects
 {
     public class JobListingPage : BasePage
     {
         private readonly By _jobDetailsBy = By.CssSelector("article.vacancy-details-23");
 
-        public JobListingPage(IWebDriver driver, IConfiguration configuration) : base(driver, configuration)
+        public JobListingPage(IWebDriver driver) : base(driver)
         {
         }
 

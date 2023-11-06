@@ -1,20 +1,25 @@
-﻿using Microsoft.Extensions.Configuration;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using WebUITestAutomation.Tests.PageObjects;
+using Microsoft.Extensions.Configuration;
+using WebUITestAutomation.Core;
 
 namespace WebUITestAutomation.Tests
 {
     public class Tests
     {
         private IWebDriver driver;
+        private string _url;
         private IConfiguration configuration;
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         [OneTimeSetUp]
         public void OnTimeSetUp()
         {
             configuration = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .Build();
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+            _url = configuration["webAppUrl"];
         }
 
         [SetUp]
@@ -38,7 +43,7 @@ namespace WebUITestAutomation.Tests
         [TestCase("java", "All Locations")]
         public void UserCanSearchForPositionBasedOnCriteria(string language, string location)
         {
-            using (var homePage = new HomePage(driver, configuration))
+            using (var homePage = new HomePage(driver, _url))
             {
                 homePage.Navigate();
                 homePage.AcceptCookies();
@@ -65,7 +70,7 @@ namespace WebUITestAutomation.Tests
         [TestCase("\"BLOCKCHAIN\"/\"Cloud\"/\"Automation\"")]
         public void GlobalSearchWorksAsExpected(string searchString)
         {
-            using (var homePage = new HomePage(driver, configuration))
+            using (var homePage = new HomePage(driver, _url))
             {
                 homePage.Navigate();
                 homePage.AcceptCookies();
@@ -90,6 +95,7 @@ namespace WebUITestAutomation.Tests
                         });
 
                     Assert.That(allSearchResultsContainSearchTerms);
+                    Logger.Info("Finished execution");
                 }
             }
         }
@@ -98,7 +104,7 @@ namespace WebUITestAutomation.Tests
         [TestCase("EPAM_Systems_Company_Overview.pdf")]
         public async Task FileDownloadWorksAsExpetedAsync(string fileName)
         {
-            using (var homePage = new HomePage(driver, configuration))
+            using (var homePage = new HomePage(driver, _url))
             {
                 homePage.Navigate();
                 homePage.AcceptCookies();
@@ -117,7 +123,7 @@ namespace WebUITestAutomation.Tests
         [Test]
         public void TitleOfTheArticleMatchesWithTitleInCarousel()
         {
-            using (var homePage = new HomePage(driver, configuration))
+            using (var homePage = new HomePage(driver, _url))
             {
                 homePage.Navigate();
                 homePage.AcceptCookies();
@@ -138,6 +144,11 @@ namespace WebUITestAutomation.Tests
         [TearDown]
         public void TearDown()
         {
+            if(TestContext.CurrentContext.Result.Outcome.Status == NUnit.Framework.Interfaces.TestStatus.Failed)
+            {
+                ScreenshotMaker.TakeBrowserScreenshot(driver);
+                ScreenshotMaker.TakeFullDisplayScreenshot();
+            }
             driver.Dispose();
         }
     }

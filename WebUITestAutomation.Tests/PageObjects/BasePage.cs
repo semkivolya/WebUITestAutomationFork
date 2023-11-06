@@ -1,20 +1,17 @@
-﻿using Microsoft.Extensions.Configuration;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System.Collections.ObjectModel;
 
-namespace WebUITestAutomation.Tests
+namespace WebUITestAutomation.Tests.PageObjects
 {
     public class BasePage : IDisposable
     {
         protected IWebDriver driver;
-        protected IConfiguration configuration;
         private bool disposed;
 
-        //TODO: use HTTPClient Factory
         public static HttpClient HttpClient { get; } = new HttpClient();
 
-        public BasePage(IWebDriver driver, IConfiguration configuration)
+        public BasePage(IWebDriver driver)
         {
             this.driver = driver;
         }
