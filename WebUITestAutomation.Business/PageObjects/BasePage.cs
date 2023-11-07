@@ -1,6 +1,4 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using System.Collections.ObjectModel;
 
 namespace WebUITestAutomation.Business.PageObjects
 {
@@ -8,6 +6,7 @@ namespace WebUITestAutomation.Business.PageObjects
     {
         protected IWebDriver driver;
         private bool disposed;
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public static HttpClient HttpClient { get; } = new HttpClient();
 
@@ -38,8 +37,9 @@ namespace WebUITestAutomation.Business.PageObjects
                 element.Clear();
                 element.SendKeys(value);
             }
-            catch (StaleElementReferenceException)
+            catch (StaleElementReferenceException e)
             {
+                Logger.Warn(e, $"Exception when calling {getElement.GetType()} function in SendKeys method");
                 var element = getElement();
                 element.Clear();
                 element.SendKeys(value);

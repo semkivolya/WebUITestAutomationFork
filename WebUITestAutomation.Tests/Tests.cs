@@ -14,6 +14,7 @@ namespace WebUITestAutomation.Tests
             configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .Build();
+            Logger.Info("Created configuration");
         }
 
         [SetUp]
@@ -77,7 +78,6 @@ namespace WebUITestAutomation.Tests
                         });
 
                     Assert.That(allSearchResultsContainSearchTerms);
-                    Logger.Info("Finished execution");
                 }
             }
         }
