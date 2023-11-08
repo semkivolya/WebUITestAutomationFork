@@ -1,7 +1,7 @@
 ﻿using OpenQA.Selenium;
-using WebUITestAutomation.Core;
+using TestAutomation.Core;
 
-namespace WebUITestAutomation.Business.PageObjects
+namespace TestAutomation.Business.UI.PageObjects
 {
     public class JobListingPage : BasePage
     {

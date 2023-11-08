@@ -1,13 +1,8 @@
 ﻿using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
-namespace WebUITestAutomation.Core
+namespace TestAutomation.Core
 {
     public static class DriverHelper
     {

@@ -4,7 +4,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 
-namespace WebUITestAutomation.Tests
+namespace TestAutomation.Tests
 {
     public class WebDriverFactory
     {

@@ -1,14 +1,14 @@
 ﻿using Microsoft.Extensions.Configuration;
-using WebUITestAutomation.Business.PageObjects;
+using TestAutomation.Business.UI.PageObjects;
 
-namespace WebUITestAutomation.Tests
+namespace TestAutomation.Tests
 {
     internal class HomeContext
     {
         public static HomePage Open(IConfiguration configuration)
         {
             var homePage = new HomePage(DriverHolder.Driver);
-            homePage.Open(configuration["application"]);
+            homePage.Open(configuration["uiapplication"]);
             return homePage;
         }
     }

@@ -4,7 +4,7 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace WebUITestAutomation.Core
+namespace TestAutomation.Core
 {
     public class ScreenshotMaker
     {
@@ -46,8 +46,8 @@ namespace WebUITestAutomation.Core
                     var scaleY = (float)bounds.Height / height;
 
                     Rectangle scaledBounds = new Rectangle(
-                                            (int)(bounds.X/scaleX),
-                                            (int)(bounds.Y/scaleY),
+                                            (int)(bounds.X / scaleX),
+                                            (int)(bounds.Y / scaleY),
                                             width,
                                             height
                                         );
@@ -65,7 +65,7 @@ namespace WebUITestAutomation.Core
             }
         }
         private static string ScreenshotsFolder => "Screenshots";
-        private static string NewScreenshotName => $"_{DateTime.Now.ToString("yyyy-MM-dd_hh-mm-ss-fff")}.{ScreenshotImageFormat}"; 
+        private static string NewScreenshotName => $"_{DateTime.Now.ToString("yyyy-MM-dd_hh-mm-ss-fff")}.{ScreenshotImageFormat}";
         private static ImageFormat ScreenshotImageFormat => ImageFormat.Png;
 
         private static string DisplayScreenshotName => "Display" + NewScreenshotName;

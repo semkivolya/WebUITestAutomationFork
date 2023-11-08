@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-namespace WebUITestAutomation.Business.PageObjects
+namespace TestAutomation.Business.UI.PageObjects
 {
     public class BasePage : IDisposable
     {

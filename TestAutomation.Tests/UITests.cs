@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
-using WebUITestAutomation.Core;
+using TestAutomation.Core;
 
-namespace WebUITestAutomation.Tests
+namespace TestAutomation.Tests
 {
-    public class Tests
+    public class UITests
     {
         private IConfiguration configuration;
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
@@ -124,7 +124,7 @@ namespace WebUITestAutomation.Tests
         [TearDown]
         public void TearDown()
         {
-            if(TestContext.CurrentContext.Result.Outcome.Status == NUnit.Framework.Interfaces.TestStatus.Failed)
+            if (TestContext.CurrentContext.Result.Outcome.Status == NUnit.Framework.Interfaces.TestStatus.Failed)
             {
                 ScreenshotMaker.TakeBrowserScreenshot(DriverHolder.Driver);
                 ScreenshotMaker.TakeFullDisplayScreenshot();
