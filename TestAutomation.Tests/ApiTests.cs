@@ -26,6 +26,7 @@ namespace TestAutomation.Tests
         public async Task ListOfUsersCanBeReceivedSuccessfully()
         {
             var response = await _requestsProcessor.GetUsers();
+            Logger.Info("Content received:\n" + response.Content);
             Assert.That(_requestsProcessor.UsersDataIsValid(response.Content), Is.True);
             Assert.That(response.ResponseStatus, Is.EqualTo(ResponseStatus.Completed));
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
@@ -36,6 +37,7 @@ namespace TestAutomation.Tests
         public async Task ResponseHeaderForAListOfUsersIsValid()
         {
             var response = await _requestsProcessor.GetUsers();
+            Logger.Info("\nReceived the following content headers:\n" + String.Join("\n", response.ContentHeaders?.Select(h => $"{h.Name}: {h.Value}")));
             var contentTypeHeader = response.ContentHeaders?.FirstOrDefault(h => h.Name.Equals("Content-Type"));
             Assert.That(contentTypeHeader, Is.Not.Null);
             Assert.That(contentTypeHeader.Value, Is.EqualTo("application/json; charset=utf-8"));
@@ -47,8 +49,8 @@ namespace TestAutomation.Tests
         public async Task UsersAreValid()
         {
             var response = await _requestsProcessor.GetUsers();
+            Logger.Info("Content received:\n" + response.Content);
             var users = _requestsProcessor.ConvertUsers(response.Content);
-
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
             Assert.That(response.ErrorMessage, Is.Null);
             Assert.That(users.Count, Is.EqualTo(10));
@@ -66,6 +68,7 @@ namespace TestAutomation.Tests
             var response = await _requestsProcessor.CreateUser(user);
             var createdUser = _requestsProcessor.ConvertUser(response.Content);
 
+            Logger.Info("Content received:\n" + response.Content);
             Assert.That(response.ErrorMessage, Is.Null);
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Created));
             Assert.That(response.Content, Is.Not.Null.Or.Empty);
@@ -76,7 +79,7 @@ namespace TestAutomation.Tests
         public async Task UserIsNotifiedIfResourceDoesNotExist()
         {
             var response = await _requestsProcessor.SendInvalidRequest();
-
+            Logger.Info("Status code received:\n" + response.StatusCode);
             Assert.That(response.ErrorMessage, Is.Null);
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
         }

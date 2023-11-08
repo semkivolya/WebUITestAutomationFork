@@ -9,6 +9,7 @@ namespace TestAutomation.Business.Api
     public sealed class RestRequestsProcessor : IDisposable
     {
         private readonly ApiClient _apiClient;
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public RestRequestsProcessor(string baseUrl)
         {
@@ -49,6 +50,7 @@ namespace TestAutomation.Business.Api
             var request = new RestRequestsBuilder("users")
                 .SetMethod(Method.Get)
                 .Build();
+            Logger.Info("Sent GET request to 'users' endpoint");
             return _apiClient.ExecuteAsync(request);
         }
 
@@ -58,6 +60,7 @@ namespace TestAutomation.Business.Api
                 .SetMethod(Method.Post)
                 .AddJsonBody(user)
                 .Build();
+            Logger.Info($"Sent POST request to 'users' endpoint with data: {JsonConvert.SerializeObject(user)}");
             return _apiClient.ExecuteAsync(request);
         }
 
@@ -66,12 +69,14 @@ namespace TestAutomation.Business.Api
             var request = new RestRequestsBuilder("invalidendpoint")
                 .SetMethod(Method.Get)
                 .Build();
+            Logger.Info("Sent GET request to 'invalidendpoint' endpoint");
             return _apiClient.ExecuteAsync(request);
         }
 
         public void Dispose()
         {
             _apiClient?.Dispose();
+            Logger.Info("Dispose ApiClient");
             GC.SuppressFinalize(this);
         }
     }
