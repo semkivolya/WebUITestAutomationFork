@@ -10,8 +10,6 @@ namespace WebUITestAutomation.Tests
         protected IWebDriver driver;
         protected IConfiguration configuration;
         private bool disposed;
-
-        //TODO: use HTTPClient Factory
         public static HttpClient HttpClient { get; } = new HttpClient();
 
         public BasePage(IWebDriver driver, IConfiguration configuration)
