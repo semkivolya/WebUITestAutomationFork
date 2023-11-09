@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-namespace WebUITestAutomation.Tests
+namespace TestAutomation.Tests
 {
     public class DriverHolder
     {

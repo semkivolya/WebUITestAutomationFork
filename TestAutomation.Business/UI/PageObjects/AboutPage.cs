@@ -1,9 +1,9 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using System.Runtime.InteropServices;
-using WebUITestAutomation.Core;
+using TestAutomation.Core;
 
-namespace WebUITestAutomation.Business.PageObjects
+namespace TestAutomation.Business.UI.PageObjects
 {
     public class AboutPage : BasePage
     {

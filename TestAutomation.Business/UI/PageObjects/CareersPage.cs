@@ -1,7 +1,7 @@
 ﻿using OpenQA.Selenium;
-using WebUITestAutomation.Core;
+using TestAutomation.Core;
 
-namespace WebUITestAutomation.Business.PageObjects
+namespace TestAutomation.Business.UI.PageObjects
 {
     public class CareersPage : BasePage
     {
@@ -54,7 +54,7 @@ namespace WebUITestAutomation.Business.PageObjects
             }
             catch (ElementClickInterceptedException e)
             {
-                Logger.Warn(e,$"Exception while selecting 'remote' option");
+                Logger.Warn(e, $"Exception while selecting 'remote' option");
                 var autocomplete = driver.FindElement(_autocompleteBy);
                 var executor = driver as IJavaScriptExecutor;
                 executor.ExecuteScript("arguments[0].style.display='none';", autocomplete);

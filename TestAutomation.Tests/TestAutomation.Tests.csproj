@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebUITestAutomation.Business\WebUITestAutomation.Business.csproj" />
+    <ProjectReference Include="..\TestAutomation.Business\TestAutomation.Business.csproj" />
   </ItemGroup>
 
   <ItemGroup>
