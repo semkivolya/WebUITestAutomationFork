@@ -6,6 +6,7 @@ using TestAutomation.Business.Api;
 namespace TestAutomation.Tests
 {
     [Category("API")]
+    [Parallelizable(ParallelScope.All)]
     public class ApiTests
     {
         private IConfiguration configuration;
