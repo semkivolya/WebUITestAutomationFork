@@ -1,46 +1,35 @@
 ﻿using Microsoft.Extensions.Configuration;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
+using TestAutomation.Core;
 
-namespace WebUITestAutomation.Tests
+namespace TestAutomation.Tests
 {
-    public class Tests
+    public class UITests
     {
-        private IWebDriver driver;
         private IConfiguration configuration;
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         [OneTimeSetUp]
         public void OnTimeSetUp()
         {
             configuration = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .Build();
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+            Logger.Info("Created configuration");
         }
 
         [SetUp]
         public void SetUp()
         {
-            if (bool.Parse(configuration["headless"]))
-            {
-                var options = new ChromeOptions();
-                options.AddArgument("--headless=new");
-                options.AddArgument("--window-size=1920,1080");
-                driver = new ChromeDriver(options);
-            }
-            else
-            {
-                driver = new ChromeDriver();
-                driver.Manage().Window.Maximize();
-            }
+            DriverHolder.Driver = WebDriverFactory.GetDriver(configuration);
+            DriverHolder.Driver.Manage().Window.Maximize();
         }
 
         [TestCase("c#", "All Locations")]
         [TestCase("java", "All Locations")]
         public void UserCanSearchForPositionBasedOnCriteria(string language, string location)
         {
-            using (var homePage = new HomePage(driver, configuration))
+            using (var homePage = HomeContext.Open(configuration))
             {
-                homePage.Navigate();
                 homePage.AcceptCookies();
 
                 using (var careersPage = homePage.ClickCareersLink())
@@ -65,9 +54,8 @@ namespace WebUITestAutomation.Tests
         [TestCase("\"BLOCKCHAIN\"/\"Cloud\"/\"Automation\"")]
         public void GlobalSearchWorksAsExpected(string searchString)
         {
-            using (var homePage = new HomePage(driver, configuration))
+            using (var homePage = HomeContext.Open(configuration))
             {
-                homePage.Navigate();
                 homePage.AcceptCookies();
                 homePage.ClickSearchIcon();
                 homePage.EnterSearchString(searchString);
@@ -98,9 +86,8 @@ namespace WebUITestAutomation.Tests
         [TestCase("EPAM_Systems_Company_Overview.pdf")]
         public async Task FileDownloadWorksAsExpetedAsync(string fileName)
         {
-            using (var homePage = new HomePage(driver, configuration))
+            using (var homePage = HomeContext.Open(configuration))
             {
-                homePage.Navigate();
                 homePage.AcceptCookies();
                 using (var aboutPage = homePage.ClickAboutLink())
                 {
@@ -117,9 +104,8 @@ namespace WebUITestAutomation.Tests
         [Test]
         public void TitleOfTheArticleMatchesWithTitleInCarousel()
         {
-            using (var homePage = new HomePage(driver, configuration))
+            using (var homePage = HomeContext.Open(configuration))
             {
-                homePage.Navigate();
                 homePage.AcceptCookies();
                 using (var insightsPage = homePage.ClickInsightsLink())
                 {
@@ -138,7 +124,12 @@ namespace WebUITestAutomation.Tests
         [TearDown]
         public void TearDown()
         {
-            driver.Dispose();
+            if (TestContext.CurrentContext.Result.Outcome.Status == NUnit.Framework.Interfaces.TestStatus.Failed)
+            {
+                ScreenshotMaker.TakeBrowserScreenshot(DriverHolder.Driver);
+                ScreenshotMaker.TakeFullDisplayScreenshot();
+            }
+            DriverHolder.Driver.Dispose();
         }
     }
 }

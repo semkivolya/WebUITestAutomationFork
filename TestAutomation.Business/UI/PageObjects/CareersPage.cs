@@ -1,10 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
+using TestAutomation.Core;
 
-namespace WebUITestAutomation.Tests
+namespace TestAutomation.Business.UI.PageObjects
 {
     public class CareersPage : BasePage
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         private readonly By _jobSearchBlockBy = By.CssSelector(".job-search.recruiting-search");
         private readonly By _keywordsFieldBy = By.Id("new_form_job_search-keyword");
@@ -16,7 +17,7 @@ namespace WebUITestAutomation.Tests
         private readonly By _sortByDateBy = By.XPath("//input[@id='sort-time']//following-sibling::label");
         private readonly By _viewAndApplyBy = By.CssSelector(".search-result__item:first-of-type .search-result__item-controls a");
 
-        public CareersPage(IWebDriver driver, IConfiguration configuration) : base(driver, configuration)
+        public CareersPage(IWebDriver driver) : base(driver)
         {
         }
 
@@ -24,52 +25,60 @@ namespace WebUITestAutomation.Tests
         {
             IJavaScriptExecutor jsExecutor = driver as IJavaScriptExecutor;
             jsExecutor.ExecuteScript("arguments[0].scrollIntoView(true);", driver.FindElement(_jobSearchBlockBy));
-
+            Logger.Info("Scrolled to search form");
         }
 
         public void EnterKeyword(string language)
         {
-            SendKeys(() => FindElement(_keywordsFieldBy), language);
+            SendKeys(() => driver.FindElementWithWait(_keywordsFieldBy), language);
+            Logger.Info($"Entered {language} into the keyword field");
         }
 
         public void EnterLocation(string location)
         {
-            Click(() => FindElement(_locationsSelectionArrowBy));
+            Click(() => driver.FindElementWithWait(_locationsSelectionArrowBy));
             Click(() =>
             {
-                var locations = FindElements(_locationsListBy);
+                var locations = driver.FindElementsWithWait(_locationsListBy);
                 return locations.FirstOrDefault(x => x.GetAttribute("title") == location);
             });
+            Logger.Info($"Selected {location} location");
         }
 
         public void CheckRemoteOption()
         {
             try
             {
-                Click(() => FindElement(_remoteCheckBy));
+                Click(() => driver.FindElementWithWait(_remoteCheckBy));
+                Logger.Info("Selected 'remote' option");
             }
-            catch (ElementClickInterceptedException)
+            catch (ElementClickInterceptedException e)
             {
+                Logger.Warn(e, $"Exception while selecting 'remote' option");
                 var autocomplete = driver.FindElement(_autocompleteBy);
                 var executor = driver as IJavaScriptExecutor;
                 executor.ExecuteScript("arguments[0].style.display='none';", autocomplete);
+                Logger.Info("Hide autocomplete window");
             }
         }
 
         public void SubmitSearch()
         {
-            Click(() => FindElement(_findButtonBy));
+            Click(() => driver.FindElementWithWait(_findButtonBy));
+            Logger.Info("Submitted search form");
         }
 
         public void SortSearchResultsByDate()
         {
-            Click(() => FindElement(_sortByDateBy));
+            Click(() => driver.FindElementWithWait(_sortByDateBy));
+            Logger.Info("Sorted jobs by date");
         }
 
         public JobListingPage ViewLatestPostedJobDetails()
         {
-            Click(() => FindElement(_viewAndApplyBy));
-            return new JobListingPage(driver, configuration);
+            Click(() => driver.FindElementWithWait(_viewAndApplyBy));
+            Logger.Info("Selected the latest posted job");
+            return new JobListingPage(driver);
         }
     }
 }

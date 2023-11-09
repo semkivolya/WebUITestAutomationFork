@@ -1,44 +1,18 @@
-﻿using Microsoft.Extensions.Configuration;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using System.Collections.ObjectModel;
+﻿using OpenQA.Selenium;
 
-namespace WebUITestAutomation.Tests
+namespace TestAutomation.Business.UI.PageObjects
 {
     public class BasePage : IDisposable
     {
         protected IWebDriver driver;
-        protected IConfiguration configuration;
         private bool disposed;
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        //TODO: use HTTPClient Factory
         public static HttpClient HttpClient { get; } = new HttpClient();
 
-        public BasePage(IWebDriver driver, IConfiguration configuration)
+        public BasePage(IWebDriver driver)
         {
             this.driver = driver;
-        }
-
-        protected IWebElement? FindElement(By by, int timeout = 10)
-        {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
-            IWebElement? element = wait.Until<IWebElement>(d =>
-            {
-                IWebElement tempElement = d.FindElement(by);
-                return tempElement.Displayed && tempElement.Enabled ? tempElement : null;
-            });
-            return element;
-        }
-
-        protected ReadOnlyCollection<IWebElement> FindElements(By by, int timeout = 10)
-        {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
-            var elements = wait.Until<ReadOnlyCollection<IWebElement>>(d =>
-            {
-                var tempElements = d.FindElements(by);
-                return tempElements.Any() ? tempElements : null;
-            });
-            return elements;
         }
 
         protected void Click(Func<IWebElement> getElement)
@@ -63,8 +37,9 @@ namespace WebUITestAutomation.Tests
                 element.Clear();
                 element.SendKeys(value);
             }
-            catch (StaleElementReferenceException)
+            catch (StaleElementReferenceException e)
             {
+                Logger.Warn(e, $"Exception when calling {getElement.GetType()} function in SendKeys method");
                 var element = getElement();
                 element.Clear();
                 element.SendKeys(value);
