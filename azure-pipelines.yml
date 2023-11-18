@@ -76,4 +76,5 @@ stages:
               targetPath: '$(System.DefaultWorkingDirectory)/TestAutomation.Tests/bin/$(buildConfiguration)/$(frameworkVersion)/Screenshots'
               publishLocation: 'pipeline'
               artifactName: Screenshots
+          condition: failed()
 
