@@ -8,6 +8,8 @@ namespace TestAutomation.Core
 {
     public class ScreenshotMaker
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
         private static class Win32Native
         {
             const int DESKTOPVERTRES = 0x75;
@@ -76,10 +78,12 @@ namespace TestAutomation.Core
         {
             if (!Directory.Exists(ScreenshotsFolder))
             {
+                Logger.Info($"Created screenshots directory: {Path.GetFullPath(ScreenshotsFolder)}");
                 Directory.CreateDirectory(ScreenshotsFolder);
             }
             var screenshotPath = Path.Combine(ScreenshotsFolder, DisplayScreenshotName);
             var screenshot = ((ITakesScreenshot)driver).GetScreenshot();
+            Logger.Info($"Took screenshot: {Path.GetFullPath(screenshotPath)}");
             screenshot.SaveAsFile(screenshotPath);
             return screenshotPath;
         }
@@ -88,6 +92,7 @@ namespace TestAutomation.Core
         {
             if (!Directory.Exists(ScreenshotsFolder))
             {
+                Logger.Info($"Created screenshots directory: {Path.GetFullPath(ScreenshotsFolder)}");
                 Directory.CreateDirectory(ScreenshotsFolder);
             }
             var screenshotPath = Path.Combine(ScreenshotsFolder, FullScreenScreenshotName);
@@ -122,6 +127,7 @@ namespace TestAutomation.Core
 
                     xOffset += screen.ScaledBounds.Width;
                 }
+                Logger.Info($"Took screenshot: {Path.GetFullPath(screenshotPath)}");
                 bitmap.Save(screenshotPath, ImageFormat.Png);
             }
 
