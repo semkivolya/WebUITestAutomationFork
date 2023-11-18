@@ -26,7 +26,7 @@ namespace TestAutomation.Tests
                     var firefoxOptions = new FirefoxOptions();
                     if (headless)
                     {
-                        firefoxOptions.AddArgument("--headless=new");
+                        firefoxOptions.AddArgument("-headless");
                         firefoxOptions.AddArgument("--window-size=1920,1080");
                     }
                     return new FirefoxDriver(firefoxOptions);
@@ -34,7 +34,7 @@ namespace TestAutomation.Tests
                     var edgeOptions = new EdgeOptions();
                     if (headless)
                     {
-                        edgeOptions.AddArgument("--headless=new");
+                        edgeOptions.AddArgument("--headless");
                         edgeOptions.AddArgument("--window-size=1920,1080");
                     }
                     return new EdgeDriver(edgeOptions);
