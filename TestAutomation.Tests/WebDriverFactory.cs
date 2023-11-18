@@ -8,9 +8,9 @@ namespace TestAutomation.Tests
 {
     public class WebDriverFactory
     {
-        public static IWebDriver GetDriver(IConfiguration configuration)
+        public static IWebDriver GetDriver(IConfiguration configuration, string browserName)
         {
-            var browserName = configuration["browser"]?.ToUpperInvariant();
+            browserName =  browserName.ToUpperInvariant();
             bool headless = bool.Parse(configuration["headless"]);
             switch (browserName.ToUpperInvariant())
             {

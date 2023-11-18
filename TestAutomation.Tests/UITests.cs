@@ -21,7 +21,7 @@ namespace TestAutomation.Tests
         [SetUp]
         public void SetUp()
         {
-            DriverHolder.Driver = WebDriverFactory.GetDriver(configuration);
+            DriverHolder.Driver = WebDriverFactory.GetDriver(configuration, TestContext.Parameters["browser"]);
             DriverHolder.Driver.Manage().Window.Maximize();
         }
 
