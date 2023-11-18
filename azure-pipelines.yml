@@ -70,18 +70,9 @@ stages:
             command: test
             projects: '**/*Tests/*.csproj'
             arguments: '--configuration $(buildConfiguration) --filter TestCategory=UI -- TestRunParameters.Parameter(name="\""browser"\"", value="\""${{ parameters.browser }}"\"")'
-  
-  - stage: PublishScreenshots
-    displayName: 'Publish Screenshots folder'
-    dependsOn: 
-      - APITests
-      - UITests
-    condition: failed()
-    jobs:
-      - job: 
-        steps:
-          - task: PublishPipelineArtifact@1
-            inputs:
+        - task: PublishPipelineArtifact@1
+          displayName: 'Publish screenshots'
+          inputs:
               targetPath: '$(System.DefaultWorkingDirectory)/TestAutomation.Tests/bin/$(buildConfiguration)/$(frameworkVersion)/Screenshots'
               publishLocation: 'pipeline'
               artifactName: Screenshots
