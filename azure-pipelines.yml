@@ -82,6 +82,7 @@ stages:
         steps:
           - task: PublishPipelineArtifact@1
             inputs:
-              targetPath: '**/Screenshots'
+              targetPath: '$(System.DefaultWorkingDirectory)/TestAutomation.Tests/bin/$(buildConfiguration)/$(frameworkVersion)/Screenshots'
               publishLocation: 'pipeline'
+              artifactName: Screenshots
 
