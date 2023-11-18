@@ -3,7 +3,7 @@ using TestAutomation.Core;
 
 namespace TestAutomation.Tests
 {
-    [Category("UITests")]
+    [Category("UI")]
     public class UITests
     {
         private IConfiguration configuration;
