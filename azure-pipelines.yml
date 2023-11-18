@@ -1,0 +1,87 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger: none
+
+pr:
+- main
+
+schedules:
+  - cron: '0 6 * * *'
+    displayName: 'Morning run at 6 AM'
+    branches:
+      include: 
+      - main
+    always: true
+    batch: false
+
+pool:
+  vmImage: windows-latest
+
+
+parameters:
+    - name: browser
+      displayName : Browser for UI tests execution
+      default: chrome
+      type: string
+      values:
+          - chrome
+          - firefox
+          - edge
+variables:
+  buildConfiguration: 'Release'
+  frameworkVersion: 'net6.0-windows'
+
+stages:
+  - stage: Build
+    displayName: 'Build stage'
+    jobs: 
+    - job: 
+      steps:
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'build'
+          arguments: '--configuration $(buildConfiguration)'
+
+  - stage: APITests
+    displayName: 'API tests run stage'
+    dependsOn: Build
+    condition: succeeded()
+    jobs:
+      - job: 
+        steps:
+        - task: DotNetCoreCLI@2
+          inputs:
+            command: test
+            projects: '**/*Tests/*.csproj'
+            arguments: '--configuration $(buildConfiguration) --filter TestCategory=API'
+
+  - stage: UITests
+    displayName: 'UI tests run stage'
+    dependsOn: Build
+    condition: succeeded()
+    jobs:
+      - job: 
+        steps:
+        - task: DotNetCoreCLI@2
+          inputs:
+            command: test
+            projects: '**/*Tests/*.csproj'
+            arguments: '--configuration $(buildConfiguration) --filter TestCategory=UI -- TestRunParameters.Parameter(name="\""browser"\"", value="\""${{ parameters.browser }}"\"")'
+  
+  - stage: PublishScreenshots
+    displayName: 'Publish Screenshots folder'
+    dependsOn: 
+      - APITests
+      - UITests
+    condition: failed()
+    jobs:
+      - job: 
+        steps:
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '**/Screenshots'
+              publishLocation: 'pipeline'
+
