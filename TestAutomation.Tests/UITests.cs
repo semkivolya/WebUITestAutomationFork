@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using System.Reflection;
 using TestAutomation.Core;
 
 namespace TestAutomation.Tests
@@ -29,6 +30,7 @@ namespace TestAutomation.Tests
         [TestCase("java", "All Locations")]
         public void UserCanSearchForPositionBasedOnCriteria(string language, string location)
         {
+            Logger.Info($"Executing {MethodBase.GetCurrentMethod().Name} method");
             using (var homePage = HomeContext.Open(configuration))
             {
                 homePage.AcceptCookies();
@@ -55,6 +57,7 @@ namespace TestAutomation.Tests
         [TestCase("\"BLOCKCHAIN\"/\"Cloud\"/\"Automation\"")]
         public void GlobalSearchWorksAsExpected(string searchString)
         {
+            Logger.Info($"Executing {MethodBase.GetCurrentMethod().Name} method");
             using (var homePage = HomeContext.Open(configuration))
             {
                 homePage.AcceptCookies();
@@ -87,6 +90,7 @@ namespace TestAutomation.Tests
         [TestCase("EPAM_Systems_Company_Overview.pdf")]
         public async Task FileDownloadWorksAsExpetedAsync(string fileName)
         {
+            Logger.Info($"Executing {MethodBase.GetCurrentMethod().Name} method");
             using (var homePage = HomeContext.Open(configuration))
             {
                 homePage.AcceptCookies();
@@ -105,6 +109,7 @@ namespace TestAutomation.Tests
         [Test]
         public void TitleOfTheArticleMatchesWithTitleInCarousel()
         {
+            Logger.Info($"Executing {MethodBase.GetCurrentMethod().Name} method");
             using (var homePage = HomeContext.Open(configuration))
             {
                 homePage.AcceptCookies();
