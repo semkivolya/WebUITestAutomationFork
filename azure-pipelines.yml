@@ -15,11 +15,9 @@ schedules:
       include: 
       - main
     always: true
-    batch: false
 
 pool:
   vmImage: windows-latest
-
 
 parameters:
     - name: browser
@@ -34,47 +32,32 @@ variables:
   buildConfiguration: 'Release'
   frameworkVersion: 'net6.0-windows'
 
-stages:
-  - stage: Build
-    displayName: 'Build stage'
-    jobs: 
-    - job: 
-      steps:
+steps:
       - task: DotNetCoreCLI@2
+        displayName: 'Building project'
         inputs:
           command: 'build'
           arguments: '--configuration $(buildConfiguration)'
 
-  - stage: APITests
-    displayName: 'API tests run stage'
-    dependsOn: Build
-    condition: succeeded()
-    jobs:
-      - job: 
-        steps:
-        - task: DotNetCoreCLI@2
-          inputs:
+      - task: DotNetCoreCLI@2
+        displayName: 'API tests run'
+        continueOnError: true
+        inputs:
             command: test
             projects: '**/*Tests/*.csproj'
             arguments: '--configuration $(buildConfiguration) --filter TestCategory=API'
-
-  - stage: UITests
-    displayName: 'UI tests run stage'
-    dependsOn: Build
-    condition: succeeded()
-    jobs:
-      - job: 
-        steps:
-        - task: DotNetCoreCLI@2
-          inputs:
+      - task: DotNetCoreCLI@2
+        displayName: 'UI tests run'
+        condition: succeededOrFailed()
+        inputs:
             command: test
             projects: '**/*Tests/*.csproj'
             arguments: '--configuration $(buildConfiguration) --filter TestCategory=UI -- TestRunParameters.Parameter(name="\""browser"\"", value="\""${{ parameters.browser }}"\"")'
-        - task: PublishPipelineArtifact@1
-          displayName: 'Publish screenshots'
-          inputs:
+      - task: PublishPipelineArtifact@1
+        displayName: 'Publish screenshots'
+        inputs:
               targetPath: '$(System.DefaultWorkingDirectory)/TestAutomation.Tests/bin/$(buildConfiguration)/$(frameworkVersion)/Screenshots'
               publishLocation: 'pipeline'
               artifactName: Screenshots
-          condition: failed()
+        condition: failed()
 
