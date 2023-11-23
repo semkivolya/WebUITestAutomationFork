@@ -30,7 +30,7 @@ namespace TestAutomation.Tests
         [TestCase("java", "All Locations")]
         public void UserCanSearchForPositionBasedOnCriteria(string language, string location)
         {
-            Logger.Info($"Executing {MethodBase.GetCurrentMethod().Name} method");
+            Logger.Info($"Executing {TestContext.CurrentContext.Test.MethodName} method");
             using (var homePage = HomeContext.Open(configuration))
             {
                 homePage.AcceptCookies();
@@ -57,7 +57,7 @@ namespace TestAutomation.Tests
         [TestCase("\"BLOCKCHAIN\"/\"Cloud\"/\"Automation\"")]
         public void GlobalSearchWorksAsExpected(string searchString)
         {
-            Logger.Info($"Executing {MethodBase.GetCurrentMethod().Name} method");
+            Logger.Info($"Executing {TestContext.CurrentContext.Test.MethodName} method");
             using (var homePage = HomeContext.Open(configuration))
             {
                 homePage.AcceptCookies();
@@ -90,7 +90,7 @@ namespace TestAutomation.Tests
         [TestCase("EPAM_Systems_Company_Overview.pdf")]
         public async Task FileDownloadWorksAsExpetedAsync(string fileName)
         {
-            Logger.Info($"Executing {MethodBase.GetCurrentMethod().Name} method");
+            Logger.Info($"Executing {TestContext.CurrentContext.Test.MethodName} method");
             using (var homePage = HomeContext.Open(configuration))
             {
                 homePage.AcceptCookies();
@@ -109,7 +109,7 @@ namespace TestAutomation.Tests
         [Test]
         public void TitleOfTheArticleMatchesWithTitleInCarousel()
         {
-            Logger.Info($"Executing {MethodBase.GetCurrentMethod().Name} method");
+            Logger.Info($"Executing {TestContext.CurrentContext.Test.MethodName} method");
             using (var homePage = HomeContext.Open(configuration))
             {
                 homePage.AcceptCookies();
@@ -132,6 +132,7 @@ namespace TestAutomation.Tests
         {
             if (TestContext.CurrentContext.Result.Outcome.Status == NUnit.Framework.Interfaces.TestStatus.Failed)
             {
+                Logger.Warn($"The test {TestContext.CurrentContext.Test.MethodName} has failed");
                 ScreenshotMaker.TakeBrowserScreenshot(DriverHolder.Driver);
                 ScreenshotMaker.TakeFullDisplayScreenshot();
             }
